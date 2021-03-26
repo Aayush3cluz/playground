@@ -1,10 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import FabricTest from "./FabricTest";
+import KonvaTrial from "./KonvaTrial";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+
+    {/* <FabricTest /> */}
+    <KonvaTrial />
   </React.StrictMode>,
   document.getElementById("root")
 );
