@@ -3,13 +3,16 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import FabricTest from "./FabricTest";
 import KonvaTrial from "./KonvaTrial";
+import Main from "./gpt/Main";
+import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
 
     {/* <FabricTest /> */}
-    <KonvaTrial />
+    {/* <KonvaTrial /> */}
+    <Main />
   </React.StrictMode>,
   document.getElementById("root")
 );
