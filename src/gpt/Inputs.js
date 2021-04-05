@@ -32,6 +32,8 @@ function Inputs({ state, setState }) {
   const [tone, setTone] = useState("polite");
   const [type, setType] = useState("I am so proud");
   const [value, setValue] = useState("");
+  const [age, setAge] = useState(20);
+  const [date, setDate] = useState(20);
   return (
     <div className="flex flex-col h-screen justify-start bg-gray-300 items-start rounded-md shadow-lg space-y-2 p-4">
       <TextField
@@ -46,6 +48,30 @@ function Inputs({ state, setState }) {
         onChange={(event) => setReceipient(event.target.value)}
         label="receipient"
       />
+      <TextField
+        id="select"
+        label="Age"
+        value={age}
+        select
+        variant="outlined"
+        onChange={(event) => setAge(event.target.value)}
+      >
+        {[...Array(121).keys()].map((r) => (
+          <MenuItem value={r}>{r}</MenuItem>
+        ))}
+      </TextField>
+      <TextField
+        id="select"
+        label="date"
+        value={date}
+        select
+        variant="outlined"
+        onChange={(event) => setDate(event.target.value)}
+      >
+        {[...Array(32).keys()].map((r) => (
+          <MenuItem value={r}>{r}</MenuItem>
+        ))}
+      </TextField>
       <TextField
         id="select"
         label="Relationship"
@@ -90,6 +116,7 @@ function Inputs({ state, setState }) {
         variant="outlined"
         onChange={(event) => setTone(event.target.value)}
       >
+        <MenuItem value="Neutral">Neutral</MenuItem>
         {toneArray.map((r) => (
           <MenuItem value={r}>{r}</MenuItem>
         ))}
@@ -140,16 +167,16 @@ function Inputs({ state, setState }) {
         onClick={() =>
           callApi(
             {
-              tone: `${tone}`,
+              tone: tone === "Neutral" ? "" : `${tone}`,
               occassion: `${occassion}`,
               receipient: `${receipient}`,
-              age: `21st`,
               interests: [`${interest1}`, `${interest2}`, `${interest3}`],
               relationship: `${relationship}`,
               expression: `${type} ${value}`,
               senderName: `${senderName}`,
               date: `22`,
               duration: `${duration}`,
+              age: age,
             },
             setState
           )
