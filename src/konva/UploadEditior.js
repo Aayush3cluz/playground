@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import React from "react";
-
-function ImageCustomizer({
+import ToggleButton from "@material-ui/lab/ToggleButton";
+function UploadEditor({
   src,
   changeImg,
   h,
@@ -15,14 +15,15 @@ function ImageCustomizer({
   rotation,
   changeRotation,
   gif,
+  selected,
+  changeSelected,
 }) {
   return (
     <div>
-      <h3>{gif ? "Gif Editor" : "Image Editor"}</h3>
+      <h3>Upload Editor</h3>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <TextField
-          label="source"
-          value={src}
+        <input
+          type="file"
           onChange={changeImg}
           style={{ width: "100%", marginRight: 10 }}
         />
@@ -56,9 +57,21 @@ function ImageCustomizer({
           onChange={changeRotation}
           style={{ width: "100%", marginRight: 10 }}
         />
+        <ToggleButton
+          value="check"
+          selected={selected}
+          onChange={changeSelected}
+          style={{
+            width: "100%",
+            marginRight: 10,
+            background: `${selected ? "green" : "white"}`,
+          }}
+        >
+          Toggle
+        </ToggleButton>
       </div>
     </div>
   );
 }
 
-export default ImageCustomizer;
+export default UploadEditor;

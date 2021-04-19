@@ -1,41 +1,41 @@
 import { TextField } from "@material-ui/core";
 import React from "react";
-
-function TextEditor({
-  content,
-  changeContent,
-  size,
-  changeSize,
-  family,
-  changeFamily,
+import ToggleButton from "@material-ui/lab/ToggleButton";
+function VideoEditor({
+  src,
+  changeImg,
+  h,
+  w,
+  changeH,
+  changeW,
   x,
   y,
-  rotation,
   changeX,
   changeY,
+  rotation,
   changeRotation,
+  selected,
+  changeSelected,
 }) {
   return (
     <div>
-      <h3>Text Editor</h3>
+      <h3>Upload Editor</h3>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <TextField
-          label="content"
-          value={content}
-          onChange={changeContent}
-          style={{ width: "100%", marginRight: 10 }}
-          multiline
-        />
-        <TextField
-          label="size"
-          value={size}
-          onChange={changeSize}
+        <input
+          type="file"
+          onChange={changeImg}
           style={{ width: "100%", marginRight: 10 }}
         />
         <TextField
-          label="family"
-          value={family}
-          onChange={changeFamily}
+          label="h"
+          value={h}
+          onChange={changeH}
+          style={{ width: "100%", marginRight: 10 }}
+        />
+        <TextField
+          label="w"
+          value={w}
+          onChange={changeW}
           style={{ width: "100%", marginRight: 10 }}
         />
         <TextField
@@ -56,9 +56,21 @@ function TextEditor({
           onChange={changeRotation}
           style={{ width: "100%", marginRight: 10 }}
         />
+        <ToggleButton
+          value="check"
+          selected={selected}
+          onChange={changeSelected}
+          style={{
+            width: "100%",
+            marginRight: 10,
+            background: `${selected ? "green" : "white"}`,
+          }}
+        >
+          Toggle
+        </ToggleButton>
       </div>
     </div>
   );
 }
 
-export default TextEditor;
+export default VideoEditor;

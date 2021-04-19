@@ -1,15 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import FabricTest from "./FabricTest";
-import KonvaTrial from "./KonvaTrial";
+import KonvaTrial from "./konva/KonvaTrial";
 import Main from "./gpt/Main";
 import "./index.css";
+import Test from "./konva/Test";
 
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
-
+    {/* <Test></Test> */}
     {/* <FabricTest /> */}
     {/* <KonvaTrial /> */}
     <Main />

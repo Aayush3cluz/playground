@@ -9,7 +9,7 @@ import { Button } from "@material-ui/core";
 import axios from "axios";
 function callApi(IPrompt, setState) {
   axios
-    .post(`http://localhost:5000/api/gpt3/getGreetings`, IPrompt)
+    .post(`http://localhost:8080/api/gpt3/getGreetings`, IPrompt)
     .then(({ data }) => {
       console.log(data);
       setState({
