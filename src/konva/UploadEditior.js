@@ -1,9 +1,13 @@
 import { TextField } from "@material-ui/core";
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
+import Cropper from "react-cropper";
+import smartcrop from "smartcrop";
+import "cropperjs/dist/cropper.css";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 function UploadEditor({
   src,
   changeImg,
+  changeImgUrl,
   h,
   w,
   changeH,
@@ -18,13 +22,65 @@ function UploadEditor({
   selected,
   changeSelected,
 }) {
+  const [image, setImage] = React.useState(null);
+  const [canvasSize, setCanvasSize] = React.useState({
+    height: "100px",
+    width: "100px",
+  });
+  const imgElRef = React.createRef();
+  const photoRef = React.createRef();
+
+  React.useEffect(() => {
+    console.log("imgElRef.current", imgElRef.current);
+    let imageHTML = imgElRef.current;
+    let photoCanvas = photoRef.current;
+
+    const asyncFn = async () => {
+      if (imageHTML !== null) {
+        const cropObj = await smartcrop.crop(imageHTML, {
+          width: w,
+          height: h,
+          ruleOfThirds: true,
+          minScale: 1.0,
+        });
+
+        const { x, y, width, height } = cropObj.topCrop;
+
+        setCanvasSize({ height: `${height}px`, width: `${width}px` });
+
+        let photoCtx = photoCanvas.getContext("2d");
+
+        photoCtx.drawImage(imageHTML, x, y, width, height, 0, 0, w, h);
+        photoCanvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          changeImgUrl(url);
+        });
+
+        let imgurl = photoCanvas.toDataURL();
+        let file = new File([imgurl], "name");
+      }
+    };
+    asyncFn();
+  }, [image, w, h]);
+
+  const fileHandler = (e) => {
+    let files = e.target.files;
+    let reader = new FileReader();
+    reader.onload = function () {
+      let image = reader.result;
+      setImage(image);
+      console.log(" onload", imgElRef.current);
+    };
+    reader.readAsDataURL(files[0]);
+    changeImg(e);
+  };
   return (
     <div>
       <h3>Upload Editor</h3>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         <input
           type="file"
-          onChange={changeImg}
+          onChange={(e) => fileHandler(e)}
           style={{ width: "100%", marginRight: 10 }}
         />
         <TextField
@@ -70,6 +126,18 @@ function UploadEditor({
           Toggle
         </ToggleButton>
       </div>
+      <img
+        ref={imgElRef}
+        src={image}
+        alt="images"
+        style={{ display: "none" }}
+      />
+      <canvas
+        ref={photoRef}
+        width="200px"
+        height="200px"
+        style={{ display: "none" }}
+      />
     </div>
   );
 }

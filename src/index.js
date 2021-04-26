@@ -11,8 +11,8 @@ ReactDOM.render(
     {/* <App /> */}
     {/* <Test></Test> */}
     {/* <FabricTest /> */}
-    {/* <KonvaTrial /> */}
-    <Main />
+    <KonvaTrial />
+    {/* <Main /> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

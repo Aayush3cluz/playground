@@ -11,16 +11,19 @@ const GIF = ({ src, h, w, x, y, rotation, layers, setlayers, index }) => {
 
   React.useEffect(() => {
     // save animation instance to stop it on unmount
-    let anim;
-    window.gifler(src).get((a) => {
-      anim = a;
-      anim.animateInCanvas(canvas);
-      anim.onDrawFrame = (ctx, frame) => {
-        ctx.drawImage(frame.buffer, frame.x, frame.y);
-        imageRef.current.getLayer().draw();
-      };
-    });
-    return () => anim && anim.stop();
+    if (imageRef.current !== null) {
+      let anim;
+      window.gifler(src).get((a) => {
+        anim = a;
+        anim.animateInCanvas(canvas);
+        anim.onDrawFrame = (ctx, frame) => {
+          ctx.drawImage(frame.buffer, frame.x, frame.y);
+          imageRef.current.getLayer().draw();
+        };
+      });
+
+      return () => anim.stop();
+    }
   }, [src, canvas]);
 
   return (

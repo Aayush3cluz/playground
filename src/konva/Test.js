@@ -1,17 +1,7 @@
 import * as React from "react";
 import smartcrop from "smartcrop";
-function dataURLtoBlob(dataurl) {
-  var arr = dataurl.split(","),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new Blob([u8arr], { type: mime });
-}
-const CropImage = () => {
+import { Modal } from "@material-ui/core";
+const CropImage = ({ src }) => {
   const [image, setImage] = React.useState(null);
   const [canvasSize, setCanvasSize] = React.useState({
     height: "100px",
@@ -27,29 +17,32 @@ const CropImage = () => {
     let photoCanvas = photoRef.current;
 
     const asyncFn = async () => {
-      const cropObj = await smartcrop.crop(imageHTML, {
-        width: 50,
-        height: 50,
-        ruleOfThirds: true,
-        minScale: 1.0,
-      });
+      if (imageHTML !== null) {
+        const cropObj = await smartcrop.crop(imageHTML, {
+          width: 50,
+          height: 50,
+          ruleOfThirds: true,
+          minScale: 1.0,
+        });
+        console.log("crop", cropObj.topCrop);
+        console.log("photoCanvas", photoCanvas);
 
-      const { x, y, width, height } = cropObj.topCrop;
+        const { x, y, width, height } = cropObj.topCrop;
 
-      setCanvasSize({ height: `${height}px`, width: `${width}px` });
+        setCanvasSize({ height: `${height}px`, width: `${width}px` });
+        console.log("canvasSize", canvasSize);
 
-      let photoCtx = photoCanvas.getContext("2d");
+        let photoCtx = photoCanvas.getContext("2d");
 
-      photoCtx.drawImage(imageHTML, x, y, width, height, 0, 0, 200, 200);
-
-      // photoCanvas = photoRef.current;
-      let imgurl = photoCanvas.toDataURL();
-      imgurl = URL.createObjectURL(dataURLtoBlob(imgurl));
-      console.log("imgurl", imgurl);
-      let file = new File([imgurl], "name");
+        photoCtx.drawImage(imageHTML, x, y, width, height, 0, 0, 200, 200);
+        let imgurl = photoCanvas.toDataURL();
+        console.log("imgurl", imgurl);
+        let file = new File([imgurl], "name");
+        console.log("file", file);
+      }
     };
     asyncFn();
-  }, []);
+  }, [image]);
 
   const fileHandler = (files) => {
     let reader = new FileReader();
@@ -61,21 +54,27 @@ const CropImage = () => {
     reader.readAsDataURL(files[0]);
   };
   return (
-    <>
+    <React.Fragment>
+      <input
+        type="file"
+        onChange={(e) => {
+          fileHandler(e.target.files);
+        }}
+      />
       <img
         ref={imgElRef}
-        src={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLL_JOP0qM29RcBjU-BzuloJLGJF7TkPj7Jw&usqp=CAU`}
+        src={image}
         alt="images"
-        crossorigin="Anonymous"
-        style={{ width: "30%", height: "30%" }}
+        style={{ display: "none" }}
       />
-      <canvas
+
+      {/* <canvas
         ref={photoRef}
-        width="200px"
-        height="200px"
-        // style={{ display: "none" }}
-      />
-    </>
+        width={`${canvasSize.width}`}
+        height={`${canvasSize.height}`}
+      /> */}
+      <canvas ref={photoRef} width="200px" height="200px" />
+    </React.Fragment>
   );
 };
 

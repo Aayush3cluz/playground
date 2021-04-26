@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useImage from "use-image";
 import { Image } from "react-konva";
 import smartcrop from "smartcrop";
@@ -15,45 +15,33 @@ function KonvaImage({
   isUpl,
 }) {
   const [image] = useImage(src, "Anonymous");
+  const [cropped, setCropped] = useState(false);
   const imgElRef = React.createRef();
   useEffect(() => {
-    console.log("here");
-    if (src !== null) {
-      let dummy = document.createElement("img");
-      dummy.setAttribute("src", src);
-      dummy.setAttribute("ref", imgElRef);
-      document.body.appendChild(dummy);
-      // console.log(dummy);
-      // let imageHTML = imgElRef.current;
-      // console.log(imageHTML);
-      // const asyncFn = async () => {
-      //   const cropObj = await smartcrop.crop(imageHTML, {
-      //     width: 50,
-      //     height: 50,
-      //     ruleOfThirds: true,
-      //     minScale: 1.0,
-      //   });
-      //   console.log(cropObj);
-      // };
+    console.log("imgElRef.current", imgElRef.current);
+    // let imageHTML = imgElRef.current;
 
-      // const { x, y, width, height } = cropObj.topCrop;
+    // const asyncFn = async () => {
+    //   if (imageHTML !== null) {
+    //     const cropObj = await smartcrop.crop(imageHTML, {
+    //       width: 50,
+    //       height: 50,
+    //       ruleOfThirds: true,
+    //       minScale: 1.0,
+    //     });
+    //     console.log("crop", cropObj.topCrop);
 
-      // setCanvasSize({ height: `${height}px`, width: `${width}px` });
-      // console.log("canvasSize", canvasSize);
-
-      // let photoCtx = photoCanvas.getContext("2d");
-
-      // photoCtx.drawImage(imageHTML, x, y, width, height, 0, 0, 200, 200);
-      // let imgurl = photoCanvas.toDataURL();
-      // console.log("imgurl", imgurl);
-      // let file = new File([imgurl], "name");
-      // console.log("file", file);
-      // asyncFn();
-    }
+    //     const { x, y, width, height } = cropObj.topCrop;
+    //     console.log(cropObj);
+    //   }
+    // };
+    // asyncFn();
+    setCropped(true);
   }, [src]);
   return (
     <Image
       image={image}
+      ref={imgElRef}
       height={h}
       width={w}
       x={x}

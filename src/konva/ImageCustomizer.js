@@ -1,9 +1,11 @@
 import { TextField } from "@material-ui/core";
 import React from "react";
+import smartcrop from "smartcrop";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 function ImageCustomizer({
   src,
   changeImg,
+  changeImgUrl,
   h,
   w,
   changeH,
@@ -18,6 +20,47 @@ function ImageCustomizer({
   selected,
   changeSelected,
 }) {
+  const [image, setImage] = React.useState(null);
+  const [canvasSize, setCanvasSize] = React.useState({
+    height: "100px",
+    width: "100px",
+  });
+  const imgElRef = React.createRef();
+  const photoRef = React.createRef();
+
+  React.useEffect(() => {
+    if (gif) {
+      console.log("imgElRef.current", imgElRef.current);
+      let imageHTML = imgElRef.current;
+      let photoCanvas = photoRef.current;
+
+      const asyncFn = async () => {
+        if (imageHTML !== null) {
+          const cropObj = await smartcrop.crop(imageHTML, {
+            width: w,
+            height: h,
+            ruleOfThirds: true,
+            minScale: 1.0,
+          });
+          console.log(cropObj);
+          const { x, y, width, height } = cropObj.topCrop;
+
+          setCanvasSize({ height: `${height}px`, width: `${width}px` });
+
+          let photoCtx = photoCanvas.getContext("2d");
+
+          photoCtx.drawImage(imageHTML, x, y, width, height, 0, 0, w, h);
+          photoCanvas.toBlob((blob) => {
+            console.log("here");
+            const url = URL.createObjectURL(blob);
+            changeImgUrl(url);
+          });
+        }
+      };
+      asyncFn();
+    }
+  }, [image, w, h]);
+
   return (
     <div>
       <h3>{gif ? "Gif Editor" : "Image Editor"}</h3>
@@ -71,6 +114,19 @@ function ImageCustomizer({
           Toggle
         </ToggleButton>
       </div>
+      <img
+        ref={imgElRef}
+        src={src}
+        alt="images"
+        // style={{ display: "none" }}
+        crossOrigin="anonymous"
+      />
+      <canvas
+        ref={photoRef}
+        width="200px"
+        height="200px"
+        // style={{ display: "none" }}
+      />
     </div>
   );
 }

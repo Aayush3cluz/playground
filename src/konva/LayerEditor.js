@@ -257,6 +257,9 @@ function LayerEditor({ layer, layers, setlayers, index, name, file, setFile }) {
             changeImg={(event) =>
               change3(event.target.value, layers, index, setlayers, "src")
             }
+            changeImgUrl={(url) =>
+              change3(url, layers, index, setlayers, "src")
+            }
             changeH={(event) =>
               change3(event.target.value, layers, index, setlayers, "h")
             }
@@ -301,6 +304,9 @@ function LayerEditor({ layer, layers, setlayers, index, name, file, setFile }) {
                 setlayers,
                 "src"
               );
+            }}
+            changeImgUrl={async (url) => {
+              change4(url, layers, index, setlayers, "src");
             }}
             changeH={(event) =>
               change4(event.target.value, layers, index, setlayers, "h")
@@ -390,7 +396,7 @@ let change = (value, layers, index, setlayers, label) => {
     label === "h" ||
     label === "w"
   )
-    value = parseInt(value);
+    value = parseInt(value) || 0;
   let copy = [...layers];
   let toChange = copy[index];
   toChange.text[label] = value;
@@ -405,7 +411,7 @@ let change2 = (value, layers, index, setlayers, label) => {
     label === "h" ||
     label === "w"
   )
-    value = parseInt(value);
+    value = parseInt(value) || 0;
   let copy = [...layers];
   let toChange = copy[index];
   toChange.img[label] = value;
@@ -420,7 +426,7 @@ let change3 = (value, layers, index, setlayers, label) => {
     label === "h" ||
     label === "w"
   )
-    value = parseInt(value);
+    value = parseInt(value) || 0;
   let copy = [...layers];
   let toChange = copy[index];
   toChange.gif[label] = value;
@@ -435,7 +441,7 @@ let change4 = (value, layers, index, setlayers, label) => {
     label === "h" ||
     label === "w"
   )
-    value = parseInt(value);
+    value = parseInt(value) || 0;
   let copy = [...layers];
   let toChange = copy[index];
   toChange.upl[label] = value;
@@ -450,7 +456,7 @@ let change5 = (value, layers, index, setlayers, label) => {
     label === "h" ||
     label === "w"
   )
-    value = parseInt(value);
+    value = parseInt(value) || 0;
   let copy = [...layers];
   let toChange = copy[index];
   toChange.vid[label] = value;
