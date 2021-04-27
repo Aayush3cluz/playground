@@ -50,7 +50,7 @@ function UploadEditor({
 
         let photoCtx = photoCanvas.getContext("2d");
 
-        photoCtx.drawImage(imageHTML, x, y, width, height, 0, 0, w, h);
+        photoCtx.drawImage(imageHTML, x, y, width, height, 0, 0, width, height);
         photoCanvas.toBlob((blob) => {
           const url = URL.createObjectURL(blob);
           changeImgUrl(url);
@@ -134,9 +134,9 @@ function UploadEditor({
       />
       <canvas
         ref={photoRef}
-        width="200px"
-        height="200px"
         style={{ display: "none" }}
+        height={canvasSize.height}
+        width={canvasSize.width}
       />
     </div>
   );

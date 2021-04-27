@@ -118,15 +118,10 @@ function ImageCustomizer({
         ref={imgElRef}
         src={src}
         alt="images"
-        // style={{ display: "none" }}
+        style={{ display: "none" }}
         crossOrigin="anonymous"
       />
-      <canvas
-        ref={photoRef}
-        width="200px"
-        height="200px"
-        // style={{ display: "none" }}
-      />
+      <canvas ref={photoRef} style={{ display: "none" }} />
     </div>
   );
 }
